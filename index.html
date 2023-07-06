@@ -8,7 +8,31 @@
           height: 100%;
           margin: 0;
           overflow: hidden;
+          background-color: rgba(43, 37, 65, 0.774);
       }
+      .section {
+        display: none;  /* Add this line to hide all sections initially */
+        position: absolute;
+        top: 20%;
+        left: 20%;
+        width: 60%;
+        height: 60%;
+        border-radius: 8px;
+        background-color: lightyellow;
+        box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+        align-items: center;
+        justify-content: center;
+        font-size: 3em;
+        transition: all 1s;
+        opacity: 0;
+    }
+  
+    #section1 {
+        display: flex;  /* Add this line to show the first section initially */
+        z-index: 3;
+        opacity: 1;
+    }
+  
 
       #source-gif, #logo, .section {
           display: none;
@@ -72,7 +96,7 @@
         left: 0;
         width: 100%;
         height: 100%;
-        background-color: rgba(55, 50, 75, 0.774);  /* You can change the RGB and alpha values */
+        background-color: rgba(43, 37, 65, 0.774);  /* You can change the RGB and alpha values */
         pointer-events: none;  /* This makes the overlay non-blocking for mouse events */
         z-index: 1; /* Adjust z-index as needed so the overlay doesn't block other elements */
     }
@@ -118,67 +142,53 @@
                     document.getElementById('logo').style.display = 'block';
                     setTimeout(function() {
                         let sections = document.querySelectorAll('.section');
+                        sectionElements = Array.from(sections);
                         for(let i = 0; i < sections.length; i++) {
-                            sections[i].style.display = 'flex';
+                            sections[i].style.display = 'none';
                         }
+                        sections[0].style.display = 'flex';
                     }, 300); 
                 }, 1000);
             }, 1000);
         });
 
-        let zIndices = [3, 2, 1, 0];
+        let currentSectionIndex = 0; // Initialize currentSectionIndex to 0
         let scrollTimeout;
         let isScrolling = false;
-        let sectionElements = Array.from(document.querySelectorAll('.section'));
+        let sectionElements;
 
         function handleScroll(event) {
             if (isScrolling) return;  // If currently scrolling, exit the function
             isScrolling = true;  // Set the flag to true to prevent further swapping until scrolling stops
 
-            if (event.deltaY > 0) {
-                // Scroll down, rotate elements to the right
-                zIndices.unshift(zIndices.pop());
-            } else {
-                // Scroll up, rotate elements to the left
-                zIndices.push(zIndices.shift());
-            }
+            sectionElements = Array.from(document.querySelectorAll('.section'));
 
-            sectionElements.forEach((sectionElement, index) => {
-                sectionElement.style.zIndex = zIndices[index];
-                if (zIndices[index] === 3) {
-                    sectionElement.style.transform = 'scale(1.1)';
-                    sectionElement.style.opacity = 0;
-                } else {
-                    sectionElement.style.transform = 'scale(1)';
-                    sectionElement.style.opacity = 1;
-                }
-            });
+            let nextSectionIndex = currentSectionIndex + (event.deltaY > 0 ? 1 : -1);
+
+            // If the next section is out of bounds, wrap around
+            nextSectionIndex = nextSectionIndex < 0 ? sectionElements.length - 1 : nextSectionIndex % sectionElements.length;
+
+            // Hide the current section
+            sectionElements[currentSectionIndex].style.display = 'none';
+
+            // Show the next section
+            sectionElements[nextSectionIndex].style.display = 'flex';
+
+            // Update the currentSectionIndex
+            currentSectionIndex = nextSectionIndex;
+
+            isScrolling = false; // Set the flag to false when scrolling stops
         }
 
         window.addEventListener('wheel', function(e) {
             clearTimeout(scrollTimeout);
             scrollTimeout = setTimeout(function() {
                 console.log('Scrolling has stopped.');
-                isScrolling = false; // Set the flag to false when scrolling stops
                 handleScroll(e);
-                if (e.deltaY < 0) {
-                    console.log('scrolling down');
-                    rub.play();
-                    setTimeout(function() {
-                        rub.pause(); // Pause the gif
-                    }, 4000);
-                }
-                else if (e.deltaY > 0) {
-                    console.log('scrolling up');
-                    rub.play();
-                    setTimeout(function() {
-                        rub.pause(); // Pause the gif
-                    }, 4000);
-                }
             }, 250);
         });
     });
-</script>
+  </script>
 
 </body>
 </html>
