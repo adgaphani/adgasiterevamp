@@ -1,48 +1,184 @@
-<html>
 <head>
-    <script type="text/javascript" src="./libgif.js"></script>
-    <style>
-        body, html {
-            height: 100%;
-            margin: 0;
-            overflow: hidden;
-        }
+  <script type="text/javascript" src="./libgif.js"></script>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@200;300;500&family=Lato:wght@300;400&family=Open+Sans:wght@400;600&family=Quicksand:wght@300;400&family=Ysabeau+SC:wght@100;300;500&display=swap" rel="stylesheet">
+  <style>
+      body, html {
+          height: 100%;
+          margin: 0;
+          overflow: hidden;
+      }
 
-        #source-gif {
-            display: none;
-        }
-        canvas{
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            
-        }
-    </style>
+      #source-gif, #logo, .section {
+          display: none;
+      }
+
+      canvas {
+          position: absolute;
+          top: 0;
+          left: 0;
+          width: 110%;
+          height: 110%;
+      }
+
+      #logo, #logo-img {
+        display: block;
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 75px;
+        z-index: 10;
+    }
+    #logo>p {
+        position: absolute;
+        top: 50px; /* adjust this value according to your image's height */
+        left:50px;
+        z-index: 10;
+        font-size: 0.3em;
+        width: 120px;
+        color: white;
+        font-family: 'Quicksand', sans-serif;
+    }
+    
+
+      .section {
+          position: absolute;
+          top: 20%;
+          left: 20%;
+          width: 60%;
+          height: 60%;
+          border-radius: 8px;
+          background-color: lightyellow;
+          box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
+          align-items: center;
+          justify-content: center;
+          font-size: 3em;
+          transition: all 1s;
+          opacity: 0;
+      }
+
+      .section h1 {
+          text-align: center;
+      }
+
+      #section1 { z-index: 3; opacity: 1; }
+      #section2 { z-index: 2; }
+      #section3 { z-index: 1; }
+      #section4 { z-index: 0; }
+      #overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(55, 50, 75, 0.774);  /* You can change the RGB and alpha values */
+        pointer-events: none;  /* This makes the overlay non-blocking for mouse events */
+        z-index: 1; /* Adjust z-index as needed so the overlay doesn't block other elements */
+    }
+
+  </style>
 </head>
 <body>
-    <img id="source-gif" src="./home-bg-3.gif" rel:auto_play="0" />
+  <div id="overlay"></div>
+  <div id="logo">
+  <img id="logo-img" src="/adg-ani-1-w.gif" alt="Logo">
+  <p>Reflecting your tech needs with an edge of creativity and expertise</p>
+  </div>
+  <div class="section" id="section1" style="z-index: 3; opacity: 1; transform: scale(1);">
+      <h1>Section 1</h1>
+  </div>
+  <div class="section" id="section2" style="z-index: 2; opacity: 0; transform: scale(1.1);">
+      <h1>Section 2</h1>
+  </div>
+  <div class="section" id="section3" style="z-index: 1; opacity: 0; transform: scale(1.1);">
+      <h1>Section 3</h1>
+  </div>
+  <div class="section" id="section4" style="z-index: 0; opacity: 0; transform: scale(1.1);">
+      <h1>Section 4</h1>
+  </div>
+  <img id="source-gif" src="./home-bg-3.gif" rel:auto_play="0" />
 
-    <script type="text/javascript">
-        var img_tag = document.getElementById('source-gif');
+  <script type="text/javascript">
+    document.addEventListener("DOMContentLoaded", function() {
+        let img_tag = document.getElementById('source-gif');
         var rub = new SuperGif({ gif: img_tag, auto_play: false, draw_while_loading: false, show_progress_bar: false });
-        
+
         rub.load(function() {
             console.log('oh hey, now the gif is loaded');
-            rub.pause(); // Pause the gif initially
+            rub.play(); // Play the gif initially
+
+            setTimeout(function() {
+                rub.pause(); // Pause the gif
+            }, 1000); 
+
+            setTimeout(function() {
+                document.getElementById('overlay').style.display = 'block';
+                setTimeout(function() {
+                    document.getElementById('logo').style.display = 'block';
+                    setTimeout(function() {
+                        let sections = document.querySelectorAll('.section');
+                        for(let i = 0; i < sections.length; i++) {
+                            sections[i].style.display = 'flex';
+                        }
+                    }, 300); 
+                }, 1000);
+            }, 1000);
         });
 
+        let zIndices = [3, 2, 1, 0];
+        let scrollTimeout;
+        let isScrolling = false;
+        let sectionElements = Array.from(document.querySelectorAll('.section'));
+
+        function handleScroll(event) {
+            if (isScrolling) return;  // If currently scrolling, exit the function
+            isScrolling = true;  // Set the flag to true to prevent further swapping until scrolling stops
+
+            if (event.deltaY > 0) {
+                // Scroll down, rotate elements to the right
+                zIndices.unshift(zIndices.pop());
+            } else {
+                // Scroll up, rotate elements to the left
+                zIndices.push(zIndices.shift());
+            }
+
+            sectionElements.forEach((sectionElement, index) => {
+                sectionElement.style.zIndex = zIndices[index];
+                if (zIndices[index] === 3) {
+                    sectionElement.style.transform = 'scale(1.1)';
+                    sectionElement.style.opacity = 0;
+                } else {
+                    sectionElement.style.transform = 'scale(1)';
+                    sectionElement.style.opacity = 1;
+                }
+            });
+        }
+
         window.addEventListener('wheel', function(e) {
-            if (e.deltaY < 0) {
-                console.log('scrolling up');
-                rub.pause();
-            }
-            else if (e.deltaY > 0) {
-                console.log('scrolling down');
-                rub.play();
-            }
+            clearTimeout(scrollTimeout);
+            scrollTimeout = setTimeout(function() {
+                console.log('Scrolling has stopped.');
+                isScrolling = false; // Set the flag to false when scrolling stops
+                handleScroll(e);
+                if (e.deltaY < 0) {
+                    console.log('scrolling down');
+                    rub.play();
+                    setTimeout(function() {
+                        rub.pause(); // Pause the gif
+                    }, 4000);
+                }
+                else if (e.deltaY > 0) {
+                    console.log('scrolling up');
+                    rub.play();
+                    setTimeout(function() {
+                        rub.pause(); // Pause the gif
+                    }, 4000);
+                }
+            }, 250);
         });
-    </script>
+    });
+</script>
+
 </body>
 </html>
