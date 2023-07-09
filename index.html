@@ -7,8 +7,8 @@
                       margin: 0;
                       overflow: hidden;
                       padding: 0;
-                      background-color: RGB(55, 50, 75);
-                      font-family: sans-serif;
+                      font-family: Helvetica Neue, Helvetica, sans-serif;
+                      background:  rgb(23, 13, 71);
                   }
 
                   #logo,
@@ -57,7 +57,7 @@
                       box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
                       align-items: center;
                       justify-content: center;
-                      font-size: 3em;
+                      font-size: 1em;
                       transition: opacity 1s, transform 1s;
                       transform: scale(1.1);
                       visibility: hidden;
@@ -86,7 +86,7 @@
                       left: 0;
                       width: 100%;
                       height: 100%;
-                      background-color: rgba(18, 13, 40, 0.774);
+                      background-color:  rgba(2, 22, 100, 0.616);
                       /* You can change the RGB and alpha values */
                       pointer-events: none;
                       /* This makes the overlay non-blocking for mouse events */
@@ -98,66 +98,48 @@
                       transform: scale(1);
                       visibility: visible;
                   }
-                  nav {
-                    top: 0; /* Add this to position nav at the top */
-                    right: 0; /* Add this to position nav at the right */
-                    margin: 27px 27px 0 0; /* Adjust this to add space at the top-right corner */
-                    position: absolute; /* Change from relative to absolute */
-                    width: 590px;
-                    height: 50px;
-                    border-radius: 8px;
-                    font-size: 0;
-                    z-index: 2;
-                    text-align: right;
-                   opacity: 0; /* Initially hide nav */
-                    transition: opacity 0.5s ease-in-out;
-                }
-        
-                nav a {
-                    line-height: 50px;
-                    height: 100%;
-                    font-size: 12px;
-                    display: inline-block;
-                    position: relative;
-                    z-index: 1;
-                    text-decoration: none;
-                    text-transform: uppercase;
+                  .skew-menu {
+                    z-index: 10;
+                    position: absolute;
+                    top: 0;
+                    right: 0;
                     text-align: center;
-                    color: lightyellow;
-                    cursor: pointer;
-                }
-        
-                nav a:hover {
-                    background-color: lightyellow;
-                    color: RGB(55, 50, 75);
-                    border: radius 15px;
-                }
-
-                  nav .animation {
-                      position: absolute;
-                      height: 100%;
-                      top: 0;
-                      z-index: 0;
-                      transition: all 0.5s ease 0s;
-                      border-radius: 8px;
+                    margin-top: 1rem;
                   }
-
-                  a[href="#section1"] {
-                      width: 100px;
+                  .skew-menu ul {
+                    display: inline-block;
+                    margin: 0;
+                    padding: 0;
+                    list-style: none;
+                    transform: skew(-25deg);
                   }
-
-                  a[href="#section2"] {
-                      width: 110px;
+                  .skew-menu ul li {
+                    background: #f7ea9fb5;
+                    float: left;
+                    border-right: 1px solid #eee;
+                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
+                    text-transform: uppercase;
+                    color: v;
+                    font-weight: bolder;
+                    transition: all 0.3s linear;
                   }
-
-                  a[href="#section3"] {
-                      width: 100px;
+                  .skew-menu ul li:first-child {
+                    border-radius: 7px 0 0 7px;
                   }
-
-                  a[href="#section4"] {
-                      width: 160px;
+                  .skew-menu ul li:last-child {
+                    border-right: none;
+                    border-radius: 0 7px 7px 0;
                   }
-
+                  .skew-menu ul li:hover {
+                    background: #eee;
+                    color:  rgb(23, 13, 71);
+                  }
+                  .skew-menu ul li a {display: block;
+                    padding: 1.2em 2.2em;
+                    color: inherit;
+                    text-decoration: none;
+                    transform: skew(25deg);
+                    font-size: 9px;}    
                  
               </style>
           </head>
@@ -180,12 +162,13 @@
                       <h1>Section 4</h1>
                   </div>
 
-                  <nav>
-                      <a href="#section1">Section 1</a>
-                      <a href="#section2">Section 2</a>
-                      <a href="#section3">section 3</a>
-                      <a href="#section4">section 4</a>
-                      <div class="animation start-home"></div>
+                  <nav class="skew-menu">
+                        <ul>
+                            <li><a href="#section1">Section 1</a></li>
+                            <li><a href="#section2">Section 2</a></li>
+                            <li><a href="#section3">Section 3</a></li>
+                            <li><a href="#section4">Section 4</a></li>
+                        </ul>
                   </nav>
 
                   <img id="source-gif" src="./home-bg-3.gif" rel:auto_play="0"/>
