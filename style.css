@@ -185,7 +185,7 @@ body {
 
 @media (min-width: 15%) and (max-width: 85%) {
     body {
-      cursor: url("../img/down.png"), auto;
+      cursor: url("/down.png"), auto;
     }
     
     .container .chevron {
