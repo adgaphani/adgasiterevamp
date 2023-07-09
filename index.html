@@ -1,220 +1,44 @@
+<!DOCTYPE html>
+<html>
 <head>
-  <script type="text/javascript" src="./scripts/libgif.js"></script>
-              <style>
-                  body,
-                  html {
-                      height: 100%;
-                      margin: 0;
-                      overflow: hidden;
-                      padding: 0;
-                      font-family: Helvetica Neue, Helvetica, sans-serif;
-                      background:  rgb(23, 13, 71);
-                  }
+  <title>Animated Cursor</title>
+  <link rel="stylesheet" type="text/css" href="styles/style.css">
+</head>
+<body>
+  <div id="overlay"></div>
+  <div id="logo">
+    <img id="logo-img" src="/img/adg-ani-1-w.gif" alt="Logo">
+    <p>Reflecting your tech needs with an edge of creativity and expertise</p>
+  </div>
+  <div class="section visible" id="section1">
+    <h1>Section 1</h1>
+  </div>
+  <div class="section" id="section2">
+    <h1>Section 2</h1>
+  </div>
+  <div class="section" id="section3">
+    <h1>Section 3</h1>
+  </div>
+  <div class="section" id="section4">
+    <h1>Section 4</h1>
+  </div>
 
-                  #logo,
-                  #source-gif,
-                  .section {
-                      display: none;
-                  }
+  <nav class="skew-menu">
+    <ul>
+      <li><a href="#section1">Section 1</a></li>
+      <li><a href="#section2">Section 2</a></li>
+      <li><a href="#section3">Section 3</a></li>
+      <li><a href="#section4">Section 4</a></li>
+    </ul>
+  </nav>
+  <div class="container">
+    <div class="chevron">
+      <img src="/img/down.png" alt="Scroll Chevron">
+    </div>
+  </div>
 
-                  canvas {
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      width: 110%;
-                      height: 110%;
-                  }
-
-                  #logo,
-                  #logo-img {
-                      display: block;
-                      position: absolute;
-                      left: 10px;
-                      width: 75px;
-                      z-index: 10;
-                  }
-                  #logo > p {
-                      position: absolute;
-                      top: 50px;
-                      /* adjust this value according to your image's height */
-                      left: 50px;
-                      z-index: 10;
-                      font-size: 0.3em;
-                      width: 120px;
-                      color: white;
-                      font-family: 'Quicksand', sans-serif;
-                  }
-
-                  .section {
-                      position: absolute;
-                      top: 20%;
-                      left: 20%;
-                      width: 60%;
-                      height: 60%;
-                      border-radius: 8px;
-                      background-color: lightyellow;
-                      box-shadow: 0 4px 8px 0 rgba(0,0,0,0.2);
-                      align-items: center;
-                      justify-content: center;
-                      font-size: 1em;
-                      transition: opacity 1s, transform 1s;
-                      transform: scale(1.1);
-                      visibility: hidden;
-                  }
-
-                  .section h1 {
-                      text-align: center;
-                  }
-
-                  #section1 {
-                      z-index: 3;
-                      opacity: 1;
-                  }
-                  #section2 {
-                      z-index: 2;
-                  }
-                  #section3 {
-                      z-index: 1;
-                  }
-                  #section4 {
-                      z-index: 1;
-                  }
-                  #overlay {
-                      position: absolute;
-                      top: 0;
-                      left: 0;
-                      width: 100%;
-                      height: 100%;
-                      background-color: #02042a7e;
-                      /* You can change the RGB and alpha values */
-                      pointer-events: none;
-                      /* This makes the overlay non-blocking for mouse events */
-                      z-index: 1;
-                      /* Adjust z-index as needed so the overlay doesn't block other elements */
-                  }
-                  .visible {
-                      opacity: 1;
-                      transform: scale(1);
-                      visibility: visible;
-                  }
-                  .skew-menu {
-                    z-index: 10;
-                    position: absolute;
-                    top: 0;
-                    right: 2%;
-                    text-align: center;
-                    margin-top: 1rem;
-                  }
-                  .skew-menu ul {
-                    display: inline-block;
-                    margin: 0;
-                    padding: 0;
-                    list-style: none;
-                    transform: skew(-25deg);
-                  }
-                  .skew-menu ul li {
-                    background: #23dcd9;
-                    float: left;
-                    box-shadow: 0 1px 1px rgba(0, 0, 0, 0.1);
-                    text-transform: uppercase;
-                    color: rgba(2, 22, 100, 0.616);
-                    font-weight: bolder;
-                    transition: all 0.3s linear;
-                  }
-                  .skew-menu ul li:first-child {
-                    border-radius: 7px 0 0 7px;
-                  }
-                  .skew-menu ul li:last-child {
-                    border-right: none;
-                    border-radius: 0 7px 7px 0;
-                  }
-                  .skew-menu ul li:hover {
-                    background: rgba(254, 254, 209, 0.582);
-                    color:  rgb(23, 13, 71);
-                  }
-                  .skew-menu ul li a {display: block;
-                    padding: 1.2em 2.2em;
-                    color: inherit;
-                    text-decoration: none;
-                    transform: skew(25deg);
-                    font-size: 9px;}    
-                    .container {
-                        position: relative;
-                      }
-                      
-                      .chevron {
-                        position: absolute;
-                        top: 0;
-                        left: 50%;
-                        transform: translateX(-50%);
-                      }
-                      
-                      .chevron img {
-                        width: 30px; /* Adjust the width as needed */
-                        height: auto; /* Adjust the height proportionally */
-                        opacity: 1;
-                        animation: moveAndFade 2s linear infinite;
-                        cursor: default;
-                      }
-                  
-                      /* Apply custom cursor within a range of 15% from left or right */
-                      @media (min-width: 15%) and (max-width: 85%) {
-                        .chevron img {
-                          cursor: url(down.png), auto;
-                        }
-                      }
-                      
-                      @keyframes moveAndFade {
-                        0% {
-                          top: 0;
-                          opacity: 1;
-                        }
-                        100% {
-                          top: 100px; /* Adjust the desired distance to move down */
-                          opacity: 0;
-                        }
-                      }
-                 
-              </style>
-          </head>
-          <body>
-            <div id="overlay"></div>
-            <div id="logo">
-              <img id="logo-img" src="/img/adg-ani-1-w.gif" alt="Logo">
-              <p>Reflecting your tech needs with an edge of creativity and expertise</p>
-            </div>
-            <div class="section visible" id="section1">
-              <h1>Section 1</h1>
-            </div>
-            <div class="section" id="section2">
-              <h1>Section 2</h1>
-            </div>
-            <div class="section" id="section3">
-              <h1>Section 3</h1>
-            </div>
-            <div class="section" id="section4">
-              <h1>Section 4</h1>
-            </div>
-          
-            <nav class="skew-menu">
-              <ul>
-                <li><a href="#section1">Section 1</a></li>
-                <li><a href="#section2">Section 2</a></li>
-                <li><a href="#section3">Section 3</a></li>
-                <li><a href="#section4">Section 4</a></li>
-              </ul>
-            </nav>
-            <div class="container">
-              <div class="chevron">
-                <img src="/img/down.png" alt="Scroll Chevron">
-              </div>
-            </div>
-          
-            <img id="source-gif" src="./img/home-bg-3.gif" rel:auto_play="0"/> 
-          
-            <script type="text/javascript" src="./scripts/script.js">
-            </script>
-          </body>
-          </html>
-          
-          </html>
+  <img id="source-gif" src="/img/home-bg-3.gif" rel:auto_play="0"/>
+  <script type="text/javascript" src="/scripts/libgif.js"></script>
+    <script type="text/javascript" src="/scripts/script.js"></script>
+</body>
+</html>
